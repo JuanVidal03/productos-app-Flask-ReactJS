@@ -2,11 +2,8 @@
 from flask import Flask
 app = Flask(__name__)
 
-
-@app.route('/')
-def inicio():
-    return 'Holaaaa'
-
+# controladores
+from controllers.productos_controller import *
 
 
 # corriendo el servidor
