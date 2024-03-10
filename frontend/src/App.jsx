@@ -4,6 +4,7 @@ import { BrowserRouter } from "react-router-dom"
 // rutas
 const PublicRoutesRoutes = lazy(() => import('./routes/publicRoutes.routes.jsx'))
 
+
 const App = () => {
 
   return (

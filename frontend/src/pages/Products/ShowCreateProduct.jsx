@@ -1,15 +1,20 @@
 // dependencias
-import { useEffect, useState, Suspense, lazy } from "react";
+import { useEffect, useState, Suspense, lazy, useContext } from "react";
 // servicios de la api
 import { allProducts } from "../../services/apiActions.js";
 // componentes
 const ListTable = lazy(() => import('../../components/Products/ListTable.jsx'));
-
+const CreateUpdateForm = lazy(() => import('../../components/Products/CreateUpdateForm.jsx'));
+// contexto
+import { GlobalContext } from "../../context/GlobalContext.jsx";
 
 const ShowCreateProduct = () => {
 
     // cambiado el titulo de la pagina
     document.title = 'Productos | Juan Vidal';
+
+    // contexto para actualizar el contenido de la tabla
+    const { updateTable } = useContext(GlobalContext);
 
     // stado que maneja los productos
     const [products, setProducts] = useState([]);
@@ -20,8 +25,10 @@ const ShowCreateProduct = () => {
             const productos = await allProducts();
             setProducts(productos.data)
         }
-        fetchProductos()
-    }, []);
+        fetchProductos();
+        
+    }, [updateTable]);
+
 
     return (
         <Suspense fallback='Cargando...'>
@@ -33,8 +40,8 @@ const ShowCreateProduct = () => {
                     }
                 </div>
                 {/*  formulario */}
-                <div className="bg-red-500 w-[40vw] h-full">
-
+                <div className="bg-red-500 w-[40vw] h-full p-8 flex justify-center items-center">
+                    <CreateUpdateForm/>
                 </div>
             </div>
         </Suspense>

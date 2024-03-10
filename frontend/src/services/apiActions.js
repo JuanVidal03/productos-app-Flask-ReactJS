@@ -13,3 +13,14 @@ export const allProducts = async() => {
         console.log(error)
     }
 }
+
+// crear producto
+export const createProduct = async(product) => {
+    try {
+        const result = await axios.post(`${urlBase}/productos`, product);
+        console.log(result);
+        return result;
+    } catch (error) {
+        console.log(error)
+    }
+}
