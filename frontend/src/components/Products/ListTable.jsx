@@ -3,7 +3,7 @@ import { Suspense, lazy, useState, useEffect } from "react";
 // componentes
 const RowTable = lazy(() => import('../../components/Products/RowTable.jsx'));
 // servicios de la api
-import { allProducts } from "../../services/apiActions.js";
+import { allProducts } from "../../services/productsApi.js";
 
 
 const ListTable = () => {

@@ -1,7 +1,7 @@
 // dependencias
 import { useState, useContext } from "react";
 // servicios de la api
-import { createProduct } from "../../services/apiActions.js";
+import { createProduct } from "../../services/productsApi.js";
 // contexto
 import { GlobalContext } from "../../context/GlobalContext.jsx";
 

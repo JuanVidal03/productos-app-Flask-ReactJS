@@ -1,7 +1,7 @@
 // dependencias
 import { useEffect, useState, Suspense, lazy, useContext } from "react";
 // servicios de la api
-import { allProducts } from "../../services/apiActions.js";
+import { allProducts } from "../../services/productsApi.js";
 // componentes
 const ListTable = lazy(() => import('../../components/Products/ListTable.jsx'));
 const CreateUpdateForm = lazy(() => import('../../components/Products/CreateUpdateForm.jsx'));
