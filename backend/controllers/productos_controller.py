@@ -1,7 +1,7 @@
 # importando los productos
 from db.mongoDB import productos
 from app import app
-from flask import request, jsonify
+from flask import request
 
 # obteniendo todos los productos
 @app.route('/productos', methods=['GET'])

@@ -6,6 +6,7 @@ cors = CORS(app)
 
 # controladores
 from controllers.productos_controller import *
+from controllers.usuarios_controller import *
 
 
 # corriendo el servidor
