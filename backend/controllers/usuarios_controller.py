@@ -15,12 +15,11 @@ def todos_usuarios():
         return all_users
         
     except Exception as error:
-        print(error)
         return str(error)
 
 
 # ingreso a la aplicacion
-@app.route('/login', methods=['GET'])
+@app.route('/login', methods=['POST'])
 def mail_confirmacion():
     try:
         credenciales = request.json
@@ -31,15 +30,14 @@ def mail_confirmacion():
                 # enviando correo
                 yag = yagmail.SMTP(user = email, password = password)
                 destinatarios = ['cesarmcuellar@gmail.com', 'juanmvg2003@gmail.com']
-                asunto = f'El usuario {credenciales['usuario']} ingreso a la aplicacion'
-                mensaje = f'Me permito informar que el usuario {credenciales['usuario']} ha ingresado al sistema!'
+                asunto = f'El usuario {usuario['nombre']} ingreso a la aplicacion'
+                mensaje = f'Me permito informar que el usuario {usuario['nombre']} ha ingresado al sistema!'
                 yag.send(destinatarios, asunto, mensaje)
                 
-                return f'El usuario {credenciales['usuario']} ha ingresado a la aplicacion', 202
+                return f'El usuario {usuario['nombre']} ha ingresado a la aplicacion', 202
         # en caso de no encontrar al usuario
         else:
             return 'El usuario no existe', 400
         
     except Exception as error:
-        print(error)
-        return str(error), 400
+        return str(error) , 400
