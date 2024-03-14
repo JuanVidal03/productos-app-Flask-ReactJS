@@ -2,10 +2,11 @@
 from db.mongoDB import usuarios
 from app import app
 from flask import request 
-import yagmail
+# funcion que envia los correos
+from utils.sendEmailYagmail import enviarEmailDeConfirmacion
+# para funciones en segundo plano
+import threading
 
-email = 'juanmvg2003@gmail.com'
-password = 'dudm ehje syad dylx'
 
 # todos los usuarios
 @app.route('/usuarios', methods=['GET'])
@@ -27,13 +28,9 @@ def mail_confirmacion():
         # verificando que las credenciales existan en la base de datos
         for usuario in usuarios.find():
             if (credenciales['mail'] == usuario['mail']) and (str(credenciales['password']) == str(usuario['password'])):
-                # enviando correo
-                yag = yagmail.SMTP(user = email, password = password)
-                destinatarios = ['cesarmcuellar@gmail.com', 'juanmvg2003@gmail.com']
-                asunto = f'El usuario {usuario['nombre']} ingreso a la aplicacion'
-                mensaje = f'Me permito informar que el usuario {usuario['nombre']} ha ingresado al sistema!'
-                yag.send(destinatarios, asunto, mensaje)
-                
+                thread = threading.Thread(target=enviarEmailDeConfirmacion, args=(usuario,))
+                thread.start()
+
                 return f'El usuario {usuario['nombre']} ha ingresado a la aplicacion', 202
         # en caso de no encontrar al usuario
         else:

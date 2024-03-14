@@ -14,22 +14,8 @@ const PrivateRoutes = () => {
     return (
         <Suspense fallback='Cargando...'>
             <Routes>
-                <Route path="/" element={logIn ? <ShowCreateProduct/> : <Navigate to='login'/>}/>
-            </Routes>
-            {/*             
-                {
-                    logIn ? (
-                        <Routes>
-                            <Route path="/" Component={ShowCreateProduct}/>
-                            <Route path="/productos" Component={ShowCreateProduct}/>
-                        </Routes>
-                    ) : (
-                        <Routes>
-                            <Route path="/" Component={Login}/>
-                            <Route path="/productos" Component={Login}/>
-                        </Routes>
-                    )
-                } */}
+                <Route path="/" element={logIn ? <ShowCreateProduct/> : <Navigate to='/login'/>}/>
+            </Routes>    
         </Suspense>
     );
 }
