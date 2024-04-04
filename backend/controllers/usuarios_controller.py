@@ -1,7 +1,7 @@
 # importando usuarios
 from db.mongoDB import usuarios
 from app import app
-from flask import request 
+from flask import request
 # funcion que envia los correos
 from utils.sendEmailYagmail import enviarEmailDeConfirmacion
 # para funciones en segundo plano
@@ -28,6 +28,7 @@ def mail_confirmacion():
         # verificando que las credenciales existan en la base de datos
         for usuario in usuarios.find():
             if (credenciales['mail'] == usuario['mail']) and (str(credenciales['password']) == str(usuario['password'])):
+                # enviar email de confirmacion al ingresar a la aplicacion
                 thread = threading.Thread(target=enviarEmailDeConfirmacion, args=(usuario,))
                 thread.start()
 

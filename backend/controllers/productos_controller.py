@@ -59,7 +59,7 @@ def actualizar_por_codigo(codigo):
         existe_producto = productos.find_one({"codigo": int(codigo)}, projection={'_id': False})
 
         if existe_producto != None:
-            updated_product = productos.find_one_and_update({"codigo": int(codigo)}, {"$set": new_product})
+            productos.find_one_and_update({"codigo": int(codigo)}, {"$set": new_product})
             return 'Producto actulizado exitosamente!', 202
         
         else:
@@ -79,8 +79,7 @@ def eliminar_por_codigo(codigo):
         existe_producto = productos.find_one({"codigo": int(codigo)}, projection={'_id': False})
 
         if existe_producto != None:
-            result = productos.find_one_and_delete({"codigo": int(codigo)})
-            print(result)
+            productos.find_one_and_delete({"codigo": int(codigo)})
             return f'Producto con codigo {codigo} eliminado exitosamente!', 202
         
         else:
