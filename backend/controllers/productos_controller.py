@@ -2,15 +2,20 @@
 from db.mongoDB import productos
 from app import app
 from flask import request
+# importar modelo
+from models.productos_model import Producto
 
 # obteniendo todos los productos
 @app.route('/productos', methods=['GET'])
 def todos_los_productos():
     try:
         # retornando todos los productos sin el _id creado por mongo
+        """
         all_products = list(productos.find({}, projection={'_id': False}))
+        """
+        all_products = Producto.objects()
         return all_products, 202
-    
+            
     except Exception as error:
         return str(error), 400
 
