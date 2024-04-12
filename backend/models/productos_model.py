@@ -2,7 +2,7 @@
 import mongoengine as me
 
 # esquema del producto
-class Producto():
+class Producto(me.Document):
     codigo = me.IntField(required=True, unique=True)
     nombre = me.StringField(max_length=50)
     precio = me.IntField()

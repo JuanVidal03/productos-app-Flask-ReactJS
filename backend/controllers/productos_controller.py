@@ -1,20 +1,16 @@
 # importando los productos
 from db.mongoDB import productos
 from app import app
-from flask import request
-# importar modelo
+from flask import request, jsonify
 from models.productos_model import Producto
 
 # obteniendo todos los productos
 @app.route('/productos', methods=['GET'])
 def todos_los_productos():
     try:
-        # retornando todos los productos sin el _id creado por mongo
-        """
-        all_products = list(productos.find({}, projection={'_id': False}))
-        """
         all_products = Producto.objects()
-        return all_products, 202
+        data = jsonify(all_products)
+        return data, 202
             
     except Exception as error:
         return str(error), 400
@@ -24,10 +20,12 @@ def todos_los_productos():
 @app.route('/producto/<codigo>', methods=['GET'])
 def producto_por_id(codigo):
     try:
-        producto = productos.find_one({"codigo": int(codigo)}, projection={'_id': False})
-        # verificanp que el producto si exista
-        if producto:
-            return producto, 202
+        
+        producto = Producto.objects(codigo=codigo)
+        data = jsonify(producto)
+        # verificando que el producto si exista
+        if data:
+            return data, 202
         else:
             return f'El producto con codigo {codigo} no existe', 400
         
@@ -40,13 +38,20 @@ def producto_por_id(codigo):
 def crear_producto():
     try:
         producto = request.json
-        # verificando que el codigo no se repita y agregando el producto
-        all_products = productos.find()
+        # todos los productos
+        all_products = Producto.objects()
         for product in all_products:
             if product['codigo'] == producto['codigo']:
                 return f'Producto con codigo: {producto["codigo"]} ya existe!', 400
         else:
-                productos.insert_one(producto)
+                esquema_producto = Producto(
+                    categoria=producto['categoria'],
+                    codigo=producto['codigo'],
+                    nombre=producto['nombre'],
+                    descripcion=producto['descripcion'],
+                    precio=producto['precio']
+                )
+                esquema_producto.save()
                 return 'Producto agregado con exito!', 202 
         
     except Exception as error:
@@ -61,17 +66,25 @@ def actualizar_por_codigo(codigo):
         new_product = request.json
 
         #verificando que el producto no exista y actualizarlo
-        existe_producto = productos.find_one({"codigo": int(codigo)}, projection={'_id': False})
+        producto  = Producto.objects(codigo=codigo)
+        data = jsonify(producto)
 
-        if existe_producto != None:
-            productos.find_one_and_update({"codigo": int(codigo)}, {"$set": new_product})
+        if producto:
+            
+            producto.update(
+                categoria = new_product['categoria'],
+                codigo = new_product['codigo'],
+                nombre = new_product['nombre'],
+                descripcion = new_product['descripcion'],
+                precio = new_product['precio'],
+            )
+            
             return 'Producto actulizado exitosamente!', 202
         
         else:
             return f'El producto con el codigo {codigo} no existe', 400
     
     except Exception as error:
-        print(error)
         return str(error), 400
 
     
@@ -79,12 +92,11 @@ def actualizar_por_codigo(codigo):
 @app.route('/producto/<codigo>', methods=['DELETE'])
 def eliminar_por_codigo(codigo):
     try:
-        
         #verificando que el producto no exista y eliminarlo
-        existe_producto = productos.find_one({"codigo": int(codigo)}, projection={'_id': False})
+        producto = Producto.objects(codigo = codigo)
 
-        if existe_producto != None:
-            productos.find_one_and_delete({"codigo": int(codigo)})
+        if producto:
+            producto.delete()
             return f'Producto con codigo {codigo} eliminado exitosamente!', 202
         
         else:

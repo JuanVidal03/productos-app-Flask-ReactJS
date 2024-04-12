@@ -11,8 +11,8 @@ app.config['MONGODB_SETTINGS'] = [{
     "host": "localhost",
     "port": 27017
 }]
-
 db = MongoEngine(app)
+
 
 # controladores
 from controllers.productos_controller import *
