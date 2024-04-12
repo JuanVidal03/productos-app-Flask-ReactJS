@@ -2,7 +2,7 @@
 import mongoengine as me
 
 # esquema del usuario
-class Usuario:
+class Usuario(me.Document):
     nombre = me.StringField(max_length=50)
-    password = me.StringField(max_length=100)
-    mail = me.EmailField(unique=True)
+    password = me.StringField(max_length=100, required=True)
+    mail = me.EmailField(unique=True, required=True)
